@@ -26,9 +26,20 @@ def fetch_powerball_draws():
         'winning_numbers': 'Winning Numbers',
         'multiplier': 'Multiplier'
     }, inplace=True)
+    df = fetch_powerball_draws()
+
+# --- New snippet starts here ---
+# Split Winning Numbers so Powerball is in its own column
+df[['Main Numbers','Powerball']] = df['Winning Numbers'].str.rsplit(' ', n=1, expand=True)
+# Optional: drop the original Winning Numbers column if you want
+df.drop(columns=['Winning Numbers'], inplace=True)
+# --- New snippet ends here ---
+
+save_to_excel(df)
+
 
     # Keep only relevant columns
-    return df[['Draw Date', 'Winning Numbers', 'Multiplier']]
+    return df[['Draw Date', 'Main Numbers', 'Powerball', 'Multiplier']]
 
 # -------------------------
 # Save draws to Excel
